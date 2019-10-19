@@ -19,8 +19,11 @@ def compare(samples, lower, upper, *algorithms):
     #create dict for results
     result = {a.__name__: {10**i: {} for i in range(lower, upper+1)} for a in algorithms}
 
+
+
     for a in algorithms:
 
+        #Creating stats
         for k in tal.keys():
             result[a.__name__][k]['samples'] = [spent(a, l) for l in tal[k]]
 
@@ -36,16 +39,38 @@ def compare(samples, lower, upper, *algorithms):
 
 
 
-def show_comparison(result):
+def show_comparison(result, key='avg'):
+    """
+    possible keys: avg, min, max
+    """
 
-    for k in result.keys():
-        plt.plot(result[k][1000]['samples'])
-        plt.legend(k)
+
+    #Getting each of the values
+    values = list(result[str(list(result.keys())[0])].keys())
+
+
+    #Putting the 'key'-time into a dict
+    comp = {a: [result[a][s][key] for s in result[a]] for a in result}
+
+
+    #Plotting the different algorithms
+    for c in comp:
+        plt.semilogx(values, comp[c], 'x')
+
+    #Must all bast at once, for legend to work
+    plt.legend([k for k in result])
+
+    plt.xlabel('Size of array')
+    plt.ylabel('Time')
 
     plt.show()
 
 
 
+samples = 5
+lower = 0
+upper = 4
 
-c = compare(5, 3, 4, merge_sort, insertion_sort)
+
+c = compare(samples, lower, upper, merge_sort, builtin_sort)
 show_comparison(c)
