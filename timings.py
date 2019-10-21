@@ -55,13 +55,13 @@ def show_comparison(result, key='avg'):
 
     #Plotting the different algorithms
     for c in comp:
-        plt.semilogx(values, comp[c], 'x')
+        plt.semilogx(values, comp[c], '_')
 
     #Must all bast at once, for legend to work
     plt.legend([k for k in result])
 
     plt.xlabel('Size of array')
-    plt.ylabel('Time')
+    plt.ylabel('Time in seconds')
 
     plt.show()
 
