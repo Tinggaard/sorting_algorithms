@@ -1,6 +1,4 @@
 import random
-import numpy as np
-
 
 def random_liste(count):
     """
@@ -21,26 +19,25 @@ def random_dict(samples, lower_power, upper_power):
     return {10**i : [random_liste(10**i) for _ in range(samples)] for i in range(lower_power,upper_power+1)}
 
 
+#Check if sorted, used for random_sort
+def check_sort(A):
+    return all([A[i] <= A[i+1] for i in range(len(A) - 1)])
 
-def random_sort(liste):
+
+
+def random_sort(A):
     """
-    This function shuffles the list in place and checs if it's been sorted,
+    This function shuffles the array in place and checs if it's been sorted,
     otherwise it repeats.
     """
 
-    #Check if sorted
-    def check_sort(liste):
-        return all([liste[i] <= liste[i+1] for i in range(len(liste) - 1)])
-
-    count = 0
     #While not sorted: shuffle
-    while not check_sort(liste):
-        random.shuffle(liste)
-        count +=1
-    return liste, count
+    while not check_sort(A):
+        random.shuffle(A)
+    return A
 
 
-def insertion_sort(liste, show_progress=False):
+def insertion_sort(A, show_progress=False):
     """
     Insertion sort is a simple sorting algorithm that works the way we sort playing cards in our hands.
 
@@ -50,31 +47,27 @@ def insertion_sort(liste, show_progress=False):
     ……a) Pick element arr[i] and insert it into sorted sequence arr[0…i-1]
     """
 
-    comp = moves = 0
     #Iterate over list from index 1
-    for k in range(1, len(liste)):
+    for k in range(1, len(A)):
         if show_progress:
-            print(liste)
+            print(A)
 
         #Initiate variable for index counting
         i = k
 
         #While the 2nd item is bigger than the first and the is is > -1
-        while liste[i] < liste[i-1] and i != 0:
-            comp += 1
-            moves += 1
+        while A[i] < A[i-1] and i != 0:
             #Swap indexes and decrement i
-            liste[i], liste[i-1] = liste[i-1], liste[i]
+            A[i], A[i-1] = A[i-1], A[i]
             i-=1
-        comp += 1
 
     if show_progress:
-        print(liste)
+        print(A)
 
-    return comp, moves
+    return A
 
 
-def selection_sort(liste, show_progress=False):
+def selection_sort(A, show_progress=False):
     """
     The selection sort algorithm sorts an array by repeatedly
     finding the minimum element (considering ascending order)
@@ -89,32 +82,29 @@ def selection_sort(liste, show_progress=False):
     is picked and moved to the sorted subarray.
     """
 
-    comp = moves = 0
     #Iterate the array as many times as there are items-1
-    for k in range(len(liste)-1):
+    for k in range(len(A)-1):
         if show_progress:
-            print(liste)
+            print(A)
 
         #Reference value for comparison
         ref = k
 
         #Find the smallest item of the array and put it in the front
-        for i in range(k+1, len(liste)):
-            comp += 1
-            if liste[i] < liste[ref]:
+        for i in range(k+1, len(A)):
+            if A[i] < A[ref]:
                 ref = i
 
-        moves += 1
-        liste[ref], liste[k] = liste[k], liste[ref]
+        A[ref], A[k] = A[k], A[ref]
 
     if show_progress:
-        print(liste)
+        print(A)
 
-    return comp, moves
+    return A
 
 
 
-def merge_sort(liste):
+def merge_sort(A, show_progress=False):
     """
     Like QuickSort, Merge Sort is a Divide and Conquer algorithm.
     It divides input array in two halves, calls itself for the
@@ -125,12 +115,16 @@ def merge_sort(liste):
     """
 
     #If only 1 element in array, return
-    if len(liste) < 2:
-        return liste
+    if len(A) < 2:
+        return A
     #Devide array on the middle until all arrays of 1 element
-    mid = int(len(liste) / 2)
-    l = merge_sort(liste[:mid])
-    r = merge_sort(liste[mid:])
+    mid = int(len(A) / 2)
+    l = merge_sort(A[:mid], show_progress)
+    if show_progress:
+        print(l)
+    r = merge_sort(A[mid:], show_progress)
+    if show_progress:
+        print(r)
 
     # sort the 2 single elements
     i = j = 0
@@ -149,34 +143,38 @@ def merge_sort(liste):
     return result
 
 
-def bubble_sort(liste):
+def bubble_sort(A, show_progress=False):
     """
     Bubble Sort is the simplest sorting algorithm that works by repeatedly
     swapping the adjacent elements if they are in wrong order.
     """
-    comp = moves = 0
 
-    for i in range(len(liste) - 1):
+    for i in range(len(A) - 1):
         swapped = False
 
-        for j in range(0, len(liste) - i - 1):
-            comp += 1
-            if liste[j] > liste[j+1]:
-                moves += 1
-                liste[j], liste[j+1] = liste[j+1], liste[j]
+        for j in range(0, len(A) - i - 1):
+            if A[j] > A[j+1]:
+
+                if show_progress:
+                    print(A)
+
+                A[j], A[j+1] = A[j+1], A[j]
                 swapped = True
 
         if not swapped:
             break
 
-    return comp, moves
+    if show_progress:
+        print(A)
+
+    return A
 
 
-def builtin_sort(liste):
+def tim_sort(A):
     """
     The default python sorting algorithm
     """
-    return sorted(liste)
+    return sorted(A)
 
 
 
@@ -185,7 +183,7 @@ def builtin_sort(liste):
 # To do some testing
 if __name__ == '__main__':
 
-    liste = random_liste(50)
+    A = random_liste(10)
 
-    sorteret = merge_sort(liste)
+    sorteret = merge_sort(A, True)
     print(sorteret)
