@@ -4,7 +4,7 @@ import matplotlib
 import numpy as np
 from sorting import *
 
-matplotlib.rcParams['text.usetex'] = True
+# matplotlib.rcParams['text.usetex'] = True
 
 
 def spent(algorithm, liste):
@@ -25,17 +25,19 @@ def compare(samples, lower, upper, key='avg', *algorithms):
     #create dict for results
     result = {a.__name__: {10**i: {} for i in range(lower, upper+1)} for a in algorithms}
 
-
-
+    #Iterating algorithms
     for a in algorithms:
 
         #Creating stats
         for k in tal.keys():
-            result[a.__name__][k]['samples'] = [spent(a, l) for l in tal[k]]
+            result[a.__name__][k]['samples'] = [spent(a, l) for l in np.copy(tal[k])]
+            #Have to np.copy, to ensure deep copy
 
             result[a.__name__][k]['min'] = min(result[a.__name__][k]['samples'])
             result[a.__name__][k]['max'] = max(result[a.__name__][k]['samples'])
             result[a.__name__][k]['avg'] = sum(result[a.__name__][k]['samples']) / samples
+
+        print('Done with {alg}, {nr}/{of}'.format(alg=a.__name__, nr=algorithms.index(a)+1, of=len(algorithms)))
 
 
     ###############################################
@@ -53,19 +55,20 @@ def compare(samples, lower, upper, key='avg', *algorithms):
 
     x = np.arange(len(labels)) #Number of labels
     no = len(algorithms) #Number of algorithms
-    width = 0.35 #Width of each bar
+    width = 0.7 / no #Width of each bar
 
 
     fig, ax = plt.subplots()
     bars = [ax.bar(x + en*width, c[1], width, label=c[0]) for en, c in enumerate(comp.items())]
 
 
-    labels = [r'$10^{' + str(n) +  r'}$' for n in range(lower, upper+1)]
+    labels = [r'$10^{' + str(n) + r'}$' for n in range(lower, upper+1)]
 
+    print(x)
     ax.set_xlabel('Size of array')
     ax.set_ylabel('Time in milliseconds')
     ax.set_title('Comparison of sorting algorithms')
-    ax.set_xticks(x + width/no)
+    ax.set_xticks(x + (width/2)*(no-1))
     ax.set_xticklabels(labels)
     ax.legend()
 
@@ -75,7 +78,7 @@ def compare(samples, lower, upper, key='avg', *algorithms):
         for rect in bar:
             height = int(rect.get_height())
             ax.annotate('{}'.format(height),
-                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xy=(rect.get_x() + rect.get_width() / no, height),
                         xytext=(0, 3),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom')
@@ -86,10 +89,12 @@ def compare(samples, lower, upper, key='avg', *algorithms):
 
 
 
-samples = 5
-lower = 0
-upper = 4
 
 
-c = compare(samples, lower, upper, 'avg', merge_sort, tim_sort)
-# show_comparison(c)
+
+if __name__ == '__main__':
+    samples = 3
+    lower = 1
+    upper = 3
+
+    compare(samples, lower, upper, 'avg', mergesort, timsort, bubblesort, insertionsort)

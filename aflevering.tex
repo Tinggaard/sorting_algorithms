@@ -58,12 +58,7 @@
 
         \subsection{Bubble sort i Python}
         \begin{minted}[python3, linenos, breaklines, fontsize=\footnotesize, bgcolor=bg]{python}
-def bubble_sort(A, show_progress=False):
-    """
-    Bubble Sort is the simplest sorting algorithm that works by repeatedly
-    swapping the adjacent elements if they are in wrong order.
-    """
-
+def bubblesort(A, show_progress=False):
     for i in range(len(A) - 1):
         swapped = False
 
@@ -84,9 +79,9 @@ def bubble_sort(A, show_progress=False):
 
     return A
         \end{minted}
-        \label{snip:bubble_sort}
+        \label{snip:bubblesort}
         \begin{center}
-            \caption{Kildekode 1: Implementering af \texttt{bubble\_sort()}}}
+            \caption{Kildekode 1: Implementering af \texttt{bubblesort()}}}
         \end{center}
         Algoritmen virker som sagt ved at tjekke et givent array \textt{A} igennem, $n$ antal gange. Eller indtil det er sorteret.
         Jeg har bygget det op over et såkaldt "nested" for-loop, hvilket i bund og grund er et for-loop inde i et andet.
@@ -110,9 +105,10 @@ def bubble_sort(A, show_progress=False):
         \subsection{Fejlfinding af program}
         Programmet vil formentlig fejle ved:
         \begin{enumerate}
-            \item Tomme lister, eller lister bestående af kun 1 element.
+            \item Tomme lister
             \item Lister bestående af andet end tal (boolske udtryk, tekst strenge osv.)
             \item Andet forkert input $i$ til funktionerne, såsom tal som ikke opfylder $i \in \{\mathbb{N}, 0\}$ for funktionen \texttt{compare()}. Samt at $\emph{upper} \geq \emph{lower}$.
+            \item Den givne $key$ er ikke gyldig. Altså enten $'avg'$, $'min'$ eller $'max'$
         \end{enumerate}
 
         \subsection{Eksempel}
@@ -123,24 +119,23 @@ compare(samples, lower, upper, *algorithms)
         \end{minted}
         Kalder man f.eks.
         \begin{minted}[python3, breaklines, fontsize=\footnotesize, bgcolor=bg]{python}
-samples = 5
-lower = 0
-upper = 4
+samples = 3
+lower = 1
+upper = 5
 
-c = compare(samples, lower, upper, merge_sort, tim_sort)
-show_comparison(c)
+compare(samples, lower, upper, 'avg', mergesort, timsort)
         \end{minted}
-        Vil \texttt{merge\_sort} og \texttt{tim\_sort} algoritmerne blive sammenlignet. Med lister i en længde af $10^0, 10^1, 10^3$ og $10^4$. Med $5$ eksempler af hver - listerne er ens for alle de givne funktioner.
-        \texttt{show\_comparison()} vil nu plotte resultatet i et nyt vindue som åbner - se figur \nameref{fig:figur1}
+        Vil \texttt{mergesort} og \texttt{timsort} algoritmerne blive sammenlignet. Med lister i en længde af $10^1, 10^2, 10^3, 10^4$ og $10^5$. Med $3$ eksempler af hver - listerne er ens for alle de givne funktioner.
+        Resultatet bliver plottet i et nyt vindue - se figur \ref{fig:figur1}\\
+        Jeg vil anbefale ikke at gå alt for højt med potenserne, da det hurtigt kommer til at tage meget lang tid på de langsommere algoritmer.
 
 
-
-
-        % \begin{figure}
-        %     \includegraphics[scale=0.5]{figur1.png}
-        %     \caption{Et plot!}
-        %     \label{Figur 1}
-        % \end{figure}
+        \begin{figure}
+            \center
+            \includegraphics[width=.7\linewidth]{figur1.png}
+            \caption{Eksempel output}
+            \label{fig:figur1}
+        \end{figure}
 
 
     \section{Bilag}

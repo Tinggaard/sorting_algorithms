@@ -25,7 +25,7 @@ def check_sort(A):
 
 
 
-def random_sort(A):
+def randomsort(A):
     """
     This function shuffles the array in place and checs if it's been sorted,
     otherwise it repeats.
@@ -37,11 +37,11 @@ def random_sort(A):
     return A
 
 
-def insertion_sort(A, show_progress=False):
+def insertionsort(A, show_progress=False):
     """
     Insertion sort is a simple sorting algorithm that works the way we sort playing cards in our hands.
 
-    // Sort an arr[] of size n
+    Sort an arr[] of size n
     insertionSort(arr, n)
     Loop from i = 1 to n-1.
     ……a) Pick element arr[i] and insert it into sorted sequence arr[0…i-1]
@@ -64,10 +64,10 @@ def insertion_sort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A
+    return A[:]
 
 
-def selection_sort(A, show_progress=False):
+def selectionsort(A, show_progress=False):
     """
     The selection sort algorithm sorts an array by repeatedly
     finding the minimum element (considering ascending order)
@@ -100,18 +100,15 @@ def selection_sort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A
+    return A[:]
 
 
 
-def merge_sort(A, show_progress=False):
+def mergesort(A, show_progress=False):
     """
     Like QuickSort, Merge Sort is a Divide and Conquer algorithm.
     It divides input array in two halves, calls itself for the
-    two halves and then merges the two sorted halves. The merge()
-    function is used for merging two halves. The merge(arr, l, m, r)
-    is key process that assumes that arr[l..m] and arr[m+1..r]
-    are sorted and merges the two sorted sub-arrays into one.
+    two halves and then merges the two sorted halves.
     """
 
     #If only 1 element in array, return
@@ -119,10 +116,10 @@ def merge_sort(A, show_progress=False):
         return A
     #Devide array on the middle until all arrays of 1 element
     mid = int(len(A) / 2)
-    l = merge_sort(A[:mid], show_progress)
+    l = mergesort(A[:mid], show_progress)
     if show_progress:
         print(l)
-    r = merge_sort(A[mid:], show_progress)
+    r = mergesort(A[mid:], show_progress)
     if show_progress:
         print(r)
 
@@ -140,10 +137,10 @@ def merge_sort(A, show_progress=False):
 
     result += l[i:] + r[j:]
 
-    return result
+    return result[:]
 
 
-def bubble_sort(A, show_progress=False):
+def bubblesort(A, show_progress=False):
     """
     Bubble Sort is the simplest sorting algorithm that works by repeatedly
     swapping the adjacent elements if they are in wrong order.
@@ -167,10 +164,10 @@ def bubble_sort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A
+    return A[:]
 
 
-def tim_sort(A):
+def timsort(A):
     """
     The default python sorting algorithm
     """
@@ -185,5 +182,5 @@ if __name__ == '__main__':
 
     A = random_liste(10)
 
-    sorteret = merge_sort(A, True)
+    sorteret = mergesort(A, True)
     print(sorteret)
