@@ -24,8 +24,7 @@ def check_sort(A):
     return all([A[i] <= A[i+1] for i in range(len(A) - 1)])
 
 
-
-def randomsort(A):
+def random_sort(A):
     """
     This function shuffles the array in place and checs if it's been sorted,
     otherwise it repeats.
@@ -37,7 +36,7 @@ def randomsort(A):
     return A
 
 
-def insertionsort(A, show_progress=False):
+def insertion_sort(A, show_progress=False):
     """
     Insertion sort is a simple sorting algorithm that works the way we sort playing cards in our hands.
 
@@ -64,10 +63,10 @@ def insertionsort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A[:]
+    return A
 
 
-def selectionsort(A, show_progress=False):
+def selection_sort(A, show_progress=False):
     """
     The selection sort algorithm sorts an array by repeatedly
     finding the minimum element (considering ascending order)
@@ -100,11 +99,11 @@ def selectionsort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A[:]
+    return A
 
 
 
-def mergesort(A, show_progress=False):
+def merge_sort(A, show_progress=False):
     """
     Like QuickSort, Merge Sort is a Divide and Conquer algorithm.
     It divides input array in two halves, calls itself for the
@@ -116,10 +115,10 @@ def mergesort(A, show_progress=False):
         return A
     #Devide array on the middle until all arrays of 1 element
     mid = int(len(A) / 2)
-    l = mergesort(A[:mid], show_progress)
+    l = merge_sort(A[:mid], show_progress)
     if show_progress:
         print(l)
-    r = mergesort(A[mid:], show_progress)
+    r = merge_sort(A[mid:], show_progress)
     if show_progress:
         print(r)
 
@@ -137,10 +136,10 @@ def mergesort(A, show_progress=False):
 
     result += l[i:] + r[j:]
 
-    return result[:]
+    return result
 
 
-def bubblesort(A, show_progress=False):
+def bubble_sort(A, show_progress=False):
     """
     Bubble Sort is the simplest sorting algorithm that works by repeatedly
     swapping the adjacent elements if they are in wrong order.
@@ -164,10 +163,10 @@ def bubblesort(A, show_progress=False):
     if show_progress:
         print(A)
 
-    return A[:]
+    return A
 
 
-def timsort(A):
+def tim_sort(A):
     """
     The default python sorting algorithm
     """
@@ -180,7 +179,14 @@ def timsort(A):
 # To do some testing
 if __name__ == '__main__':
 
-    A = random_liste(10)
+    # A = random_liste(10)
+    #
+    # sorteret = merge_sort(A, True)
+    # print(sorteret)
 
-    sorteret = mergesort(A, True)
-    print(sorteret)
+    a = []
+    b = [6]
+    print(bubble_sort(a), bubble_sort(b))
+    print(merge_sort(a), merge_sort(b))
+    print(insertion_sort(a), insertion_sort(b))
+    print(selection_sort(a), selection_sort(b))

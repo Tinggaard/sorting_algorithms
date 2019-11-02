@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
 from sorting import *
+import argparse
 
 # matplotlib.rcParams['text.usetex'] = True
 
@@ -15,10 +16,7 @@ def spent(algorithm, liste):
 
 
 
-def compare(samples, lower, upper, key='avg', *algorithms):
-    """
-    possible keys: avg, min, max
-    """
+def compare(samples, lower, upper, key='avg', plot=True, *algorithms):
 
     tal = random_dict(samples, lower, upper)
 
@@ -39,6 +37,8 @@ def compare(samples, lower, upper, key='avg', *algorithms):
 
         print('Done with {alg}, {nr}/{of}'.format(alg=a.__name__, nr=algorithms.index(a)+1, of=len(algorithms)))
 
+    if not plot:
+        return result
 
     ###############################################
     ################# PLOTTING ####################
@@ -64,10 +64,9 @@ def compare(samples, lower, upper, key='avg', *algorithms):
 
     labels = [r'$10^{' + str(n) + r'}$' for n in range(lower, upper+1)]
 
-    print(x)
     ax.set_xlabel('Size of array')
     ax.set_ylabel('Time in milliseconds')
-    ax.set_title('Comparison of sorting algorithms')
+    ax.set_title('Comparison of sorting algorithms with {} samples and key: \'{}\''.format(len(labels), key))
     ax.set_xticks(x + (width/2)*(no-1))
     ax.set_xticklabels(labels)
     ax.legend()
@@ -78,7 +77,7 @@ def compare(samples, lower, upper, key='avg', *algorithms):
         for rect in bar:
             height = int(rect.get_height())
             ax.annotate('{}'.format(height),
-                        xy=(rect.get_x() + rect.get_width() / no, height),
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
                         xytext=(0, 3),  # 3 points vertical offset
                         textcoords="offset points",
                         ha='center', va='bottom')
@@ -90,11 +89,36 @@ def compare(samples, lower, upper, key='avg', *algorithms):
 
 
 
+def main():
+    functions = {'bubble_sort': bubble_sort,
+    'insertion_sort': insertion_sort,
+    'selection_sort': selection_sort,
+    'merge_sort': merge_sort,
+    'tim_sort': tim_sort}
+
+    parser = argparse.ArgumentParser(description='Compare sorting algorithms')
+
+    parser.add_argument('-s', '--samples', default=3, type=int, help='Number of samples')
+
+    parser.add_argument('-l', '--lower', default=1, type=int, help='The minimum size of the array as a power of 10')
+
+    parser.add_argument('-u', '--upper', default=4, type=int, help='The maximum size of the array as a power of 10')
+
+    parser.add_argument('-k', '--key', default='avg', type=str, help='The key to use for the timings, \
+    valid keys are: \'avg\', \'min\', \'max\'')
+
+    parser.add_argument('-q', '--quiet', dest='plot', action='store_false', help='Weather to plot or not')
+    parser.set_defaults(plot=True)
+
+    parser.add_argument('-f', '--functions', default='merge_sort', nargs='+', type=str, help='The sorting algorithms to use')
+
+
+    args = parser.parse_args()
+
+
+
+    return compare(args.samples, args.lower, args.upper, args.key, args.plot, *[functions[k] for k in args.functions])
 
 
 if __name__ == '__main__':
-    samples = 3
-    lower = 1
-    upper = 3
-
-    compare(samples, lower, upper, 'avg', mergesort, timsort, bubblesort, insertionsort)
+    main()
