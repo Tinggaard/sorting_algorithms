@@ -80,9 +80,7 @@ def bubblesort(A, show_progress=False):
     return A
         \end{minted}
         \label{snip:bubblesort}
-        \begin{center}
-            \caption{Kildekode 1: Implementering af \texttt{bubblesort()}}}
-        \end{center}
+        % \caption{Kildekode 1: Implementering af \texttt{bubble\_sort()}}}
         Algoritmen virker som sagt ved at tjekke et givent array \textt{A} igennem, $n$ antal gange. Eller indtil det er sorteret.
         Jeg har bygget det op over et såkaldt "nested" for-loop, hvilket i bund og grund er et for-loop inde i et andet.
         Det yderste for-loop, looper altså over arrayet, $n-1$ gange.
@@ -105,34 +103,43 @@ def bubblesort(A, show_progress=False):
         \subsection{Fejlfinding af program}
         Programmet vil formentlig fejle ved:
         \begin{enumerate}
-            \item Tomme lister
             \item Lister bestående af andet end tal (boolske udtryk, tekst strenge osv.)
             \item Andet forkert input $i$ til funktionerne, såsom tal som ikke opfylder $i \in \{\mathbb{N}, 0\}$ for funktionen \texttt{compare()}. Samt at $\emph{upper} \geq \emph{lower}$.
             \item Den givne $key$ er ikke gyldig. Altså enten $'avg'$, $'min'$ eller $'max'$
         \end{enumerate}
 
         \subsection{Eksempel}
-        Inden programmet køres, skal det sættes op i \nameref{file:timing}, hvor man angiver antal prøver for hver liste-længde, samt en oppe og nedre grænse for listelængden, angivet i en potens af 10. Syntaksen er som følger:
-        \newline
-        \begin{minted}[python3, breaklines, fontsize=\footnotesize, bgcolor=bg]{python}
-compare(samples, lower, upper, *algorithms)
-        \end{minted}
-        Kalder man f.eks.
-        \begin{minted}[python3, breaklines, fontsize=\footnotesize, bgcolor=bg]{python}
-samples = 3
-lower = 1
-upper = 5
+        Programmet køres fra kommandolinjen med følgende syntaks
+        \begin{minted}[fontsize=\footnotesize, bgcolor=bg]{bash}
+$ python timings.py [-h] [-s SAMPLES] [-l LOWER] [-u UPPER] [-k KEY]
+                    [-q] [-f FUNCTIONS [FUNCTIONS ...]]
+        \end{minted}{bash}
+        Er du i tvivl, køres koden blot med flaget \texttt{-h}, for at få en hjælpe-guide frem.
+        Alle flagene har en stadard-værdi, som blot bliver passeret til filen, hvis andet ikke er angivet.
 
-compare(samples, lower, upper, 'avg', mergesort, timsort)
+        \paragraph{Standardværdier for flagene}
+        \begin{itemize}
+            \item \texttt{-s} $3$
+            \item \texttt{-l} $1$
+            \item \texttt{-u} $4$
+            \item \texttt{-k} $avg$
+            \item \texttt{-q} $False$
+            \item \texttt{-f} $merge\_sort$
+        \end{itemize}
+        For faktisk at sammenligne forskellige algoritmer, skal der selvfølgelig passeres flere algoritmer til \texttt{-f} flaget, som blot adskilles af mellemrum.
+        \newline
+        Kalder man f.eks.
+        \begin{minted}[fontsize=\footnotesize, bgcolor=bg]{bash}
+$ python timings.py -f merge_sort tim_sort
         \end{minted}
-        Vil \texttt{mergesort} og \texttt{timsort} algoritmerne blive sammenlignet. Med lister i en længde af $10^1, 10^2, 10^3, 10^4$ og $10^5$. Med $3$ eksempler af hver - listerne er ens for alle de givne funktioner.
+        Vil \texttt{merge\_sort} og \texttt{tim\_sort} algoritmerne blive sammenlignet. Med lister i en længde af $10^1, 10^2, 10^3$ og $10^4$. Med $3$ eksempler af hver - listerne er ens for alle de givne funktioner.
         Resultatet bliver plottet i et nyt vindue - se figur \ref{fig:figur1}\\
         Jeg vil anbefale ikke at gå alt for højt med potenserne, da det hurtigt kommer til at tage meget lang tid på de langsommere algoritmer.
 
 
-        \begin{figure}
+        \begin{figure}[htpb!]
             \center
-            \includegraphics[width=.7\linewidth]{figur1.png}
+            \includegraphics[width=.6\linewidth]{figur1.png}
             \caption{Eksempel output}
             \label{fig:figur1}
         \end{figure}
